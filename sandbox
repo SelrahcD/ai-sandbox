@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+
+case "${1:-help}" in
+  up)
+    devcontainer up --workspace-folder "$SCRIPT_DIR"
+    ;;
+  shell)
+    devcontainer exec --workspace-folder "$SCRIPT_DIR" bash
+    ;;
+  claude)
+    devcontainer exec --workspace-folder "$SCRIPT_DIR" claude --dangerously-skip-permissions
+    ;;
+  setup)
+    devcontainer exec --workspace-folder "$SCRIPT_DIR" bash /workspace/.devcontainer/scripts/setup-plugins.sh
+    ;;
+  login)
+    devcontainer exec --workspace-folder "$SCRIPT_DIR" claude login
+    ;;
+  down)
+    docker compose -f "$SCRIPT_DIR/.devcontainer/docker-compose.yml" down
+    ;;
+  rebuild)
+    devcontainer up --workspace-folder "$SCRIPT_DIR" --remove-existing-container
+    ;;
+  *)
+    echo "AI Sandbox - Run Claude Code in a sandboxed container"
+    echo ""
+    echo "Usage: ./sandbox <command>"
+    echo ""
+    echo "Commands:"
+    echo "  up        Start the container"
+    echo "  down      Stop the container"
+    echo "  rebuild   Rebuild the container from scratch"
+    echo "  login     Run claude login inside the container"
+    echo "  setup     Install marketplaces and plugins"
+    echo "  claude    Launch Claude Code (full permissions)"
+    echo "  shell     Open a bash shell in the container"
+    echo ""
+    echo "First time setup:"
+    echo "  ./sandbox up"
+    echo "  ./sandbox login"
+    echo "  ./sandbox setup"
+    echo "  ./sandbox claude"
+    ;;
+esac
