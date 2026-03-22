@@ -1,4 +1,6 @@
-# AI Sandbox
+⚠️ This is experimental and doesn't work for now. I cannot get my plugins installed inside the devcontainer because of an issue with the ssh agent
+
+# AI Sandboxo
 
 Reusable devcontainer for running Claude Code with full permissions in a sandboxed environment. Drop it into any TS/React/Next project.
 
